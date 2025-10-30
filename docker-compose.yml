@@ -3,7 +3,7 @@ services:
     image: tomee:jre21-webprofile
     container_name: tomee
     ports:
-      - "8080:8080"
+      - "8989:8080"
     volumes:
       - ./target/firstweb:/usr/local/tomee/webapps
     depends_on:
@@ -18,9 +18,9 @@ services:
       MYSQL_USER: cristian
       MYSQL_PASSWORD: secret
     ports:
-      - "3306:3306"
+      - "3366:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data_server:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -33,4 +33,4 @@ services:
     depends_on:
       - db
 volumes:
-  db_data:
+  db_data_server:
