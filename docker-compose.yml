@@ -2,6 +2,7 @@ services:
   tomee:
     image: tomee:jre21-webprofile
     container_name: tomee
+    user: 1000:1000
     ports:
       - "8989:8080"
     volumes:
