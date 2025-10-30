@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "mobieServlet", value = "/movie")
+@WebServlet(name = "movieServlet", value = "/movie")
 public class MovieServlet extends HttpServlet {
 
     @Override
