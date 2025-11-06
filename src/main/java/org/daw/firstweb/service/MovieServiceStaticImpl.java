@@ -3,6 +3,7 @@ package org.daw.firstweb.service;
 import org.daw.firstweb.model.Movie;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MovieServiceStaticImpl  implements MovieService{
 
@@ -16,7 +17,7 @@ public class MovieServiceStaticImpl  implements MovieService{
 
     public Movie findBy(Long id) {
         for (Movie movie : movies) {
-            if (movie.getId() == id){
+            if (Objects.equals(movie.getId(), id)){
                 return movie;
             }
         }
@@ -34,7 +35,7 @@ public class MovieServiceStaticImpl  implements MovieService{
 
     public Movie deleteMovieById(Long id){
         for (Movie movie : movies) {
-            if (movie.getId() == id) {
+            if (Objects.equals(movie.getId(), id)) {
                 movies.remove(movie);
                 return movie;
             }
