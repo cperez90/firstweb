@@ -15,14 +15,30 @@ public class MovieServiceStaticImpl  implements MovieService{
     }
 
     public Movie findBy(Long id) {
-        return
+        for (Movie movie : movies) {
+            if (movie.getId() == id){
+                return movie;
+            }
+        }
+        return null;
     }
 
     public boolean addMovie(Movie newMovie) {
-        return true;
+        if (movies.contains(newMovie)) {
+            return false;
+        } else {
+            movies.add(newMovie);
+            return true;
+        }
     }
 
     public Movie deleteMovieById(Long id){
-        return
+        for (Movie movie : movies) {
+            if (movie.getId() == id) {
+                movies.remove(movie);
+                return movie;
+            }
+        }
+        return null;
     }
 }

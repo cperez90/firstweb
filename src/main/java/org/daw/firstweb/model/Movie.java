@@ -6,15 +6,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Movie {
-    private int id;
+    private Long id;
     private String title;
-    private String descripcion;
+    private String description;
     private int year;
 
-    public Movie(int id, String title, String descripcion, int year) {
+    public Movie(Long id, String title, String description, int year) {
         this.id = id;
         this.title = title;
-        this.descripcion = descripcion;
+        this.description = description;
         this.year = year;
     }
 }
