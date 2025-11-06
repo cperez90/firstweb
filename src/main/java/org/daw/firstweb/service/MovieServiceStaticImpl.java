@@ -8,12 +8,14 @@ public class MovieServiceStaticImpl  implements MovieService{
 
     private static List<Movie> movies;
 
+
+
     public List<Movie> findAll(){
         return movies;
     }
 
     public Movie findBy(Long id) {
-        return new Movie();
+        return
     }
 
     public boolean addMovie(Movie newMovie) {
@@ -21,6 +23,6 @@ public class MovieServiceStaticImpl  implements MovieService{
     }
 
     public Movie deleteMovieById(Long id){
-        return new Movie();
+        return
     }
 }

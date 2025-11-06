@@ -25,6 +25,8 @@ public class MoviesServlet extends HttpServlet {
 
         out.println("<h1>Hola som una Movie</h1>");*/
 
+        String nom = req.getParameter("nom");
+
         req.setAttribute("nomPeli", "The Matrix");
 
         req.getRequestDispatcher("movie.js").forward(req,resp);
