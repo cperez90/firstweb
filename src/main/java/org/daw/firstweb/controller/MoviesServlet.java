@@ -1,4 +1,4 @@
-package org.daw.firstweb;
+package org.daw.firstweb.controller;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -8,10 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-@WebServlet(name = "movieServlet", value = "/movie")
-public class MovieServlet extends HttpServlet {
+@WebServlet(name = "movieServlet", value = "/movies")
+public class MoviesServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -20,10 +19,14 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=UTF-8");
+        /*resp.setContentType("text/html;charset=UTF-8");
 
         PrintWriter out = resp.getWriter();
 
-        out.println("<h1>Hola som una Movie</h1>");
+        out.println("<h1>Hola som una Movie</h1>");*/
+
+        req.setAttribute("nomPeli", "The Matrix");
+
+        req.getRequestDispatcher("movie.js").forward(req,resp);
     }
 }

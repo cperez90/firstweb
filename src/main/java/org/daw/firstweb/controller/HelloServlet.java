@@ -1,4 +1,4 @@
-package org.daw.firstweb;
+package org.daw.firstweb.controller;
 
 import java.io.*;
 
