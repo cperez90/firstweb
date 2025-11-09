@@ -8,7 +8,7 @@ import java.util.List;
 public interface MovieService {
 
     List<Movie> findAll();
-    Movie findBy(Long id);
+    Movie findById(int id);
     boolean addMovie(Movie newMovie);
-    Movie deleteMovieById(Long id);
+    Movie deleteMovieById(int id);
 }

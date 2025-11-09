@@ -9,13 +9,11 @@ public class MovieServiceStaticImpl  implements MovieService{
 
     private static List<Movie> movies;
 
-
-
     public List<Movie> findAll(){
         return movies;
     }
 
-    public Movie findBy(Long id) {
+    public Movie findById(int id) {
         for (Movie movie : movies) {
             if (Objects.equals(movie.getId(), id)){
                 return movie;
@@ -33,7 +31,7 @@ public class MovieServiceStaticImpl  implements MovieService{
         }
     }
 
-    public Movie deleteMovieById(Long id){
+    public Movie deleteMovieById(int id){
         for (Movie movie : movies) {
             if (Objects.equals(movie.getId(), id)) {
                 movies.remove(movie);

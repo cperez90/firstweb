@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.daw.firstweb.model.Movie;
+import org.daw.firstweb.service.MovieServiceStaticImpl;
 
 import java.io.IOException;
 
@@ -25,10 +27,27 @@ public class MoviesServlet extends HttpServlet {
 
         out.println("<h1>Hola som una Movie</h1>");*/
 
-        String nom = req.getParameter("nom");
+        /*String nom = req.getParameter("nom");
 
         req.setAttribute("nomPeli", "The Matrix");
 
-        req.getRequestDispatcher("movie.js").forward(req,resp);
+        req.getRequestDispatcher("movie.js").forward(req,resp);*/
+
+        MovieServiceStaticImpl service = new MovieServiceStaticImpl();
+        service.addMovie(new Movie(1, "Inception", "A thief enters dreams to steal secrets."));
+        service.addMovie(new Movie(2, "The Matrix", "A hacker discovers the truth about reality."));
+        service.addMovie(new Movie(3, "Interstellar", "Explorers travel through a wormhole to save humanity."));
+        service.addMovie(new Movie(4, "The Dark Knight", "Batman faces the Joker in Gotham City."));
+        service.addMovie(new Movie(5, "Avatar", "A soldier becomes part of an alien world."));
+        if (req.getParameter("id") == null) {
+            req.setAttribute("movies", service.findAll());
+            req.getRequestDispatcher("movies.jsp").forward(req, resp);
+        }
+
+        int id = Integer.parseInt(req.getParameter("id"));
+        if (id >= 0 && id < service.findAll().size()) {
+            req.setAttribute("movie", service.findById(id));
+            req.getRequestDispatcher("movie.jsp").forward(req, resp);
+        }
     }
 }
