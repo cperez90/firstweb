@@ -4,22 +4,27 @@ import org.daw.firstweb.model.Movie;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.NoSuchElementException;
 
-public class MovieServiceStaticImpl  implements MovieService{
+public class MovieServiceStaticImpl implements MovieService{
 
     private static List<Movie> movies;
 
     public List<Movie> findAll(){
+        if (movies == null){
+            throw new NoSuchElementException("No hay movies");
+        }
         return movies;
     }
 
+    @Override
     public Movie findById(int id) {
         for (Movie movie : movies) {
             if (Objects.equals(movie.getId(), id)){
                 return movie;
             }
         }
-        return null;
+        throw new NoSuchElementException("No existe el id: " + id);
     }
 
     public boolean addMovie(Movie newMovie) {
