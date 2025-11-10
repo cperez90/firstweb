@@ -59,7 +59,7 @@ public class MoviesServlet extends HttpServlet {
                 String movieTitle = result.getString("title");
                 String movieDescription = result.getString("description");
                 int movieYear = result.getInt("year");
-                Movie movie = new Movie(movieId,movieTitle,movieDescription,movieYear);
+                Movie movie = new Movie(movieId,movieTitle,movieDescription,movieYear,0);
 
                 service.addMovie(movie);
             }
@@ -78,5 +78,11 @@ public class MoviesServlet extends HttpServlet {
             req.setAttribute("movie", service.findById(id));
             req.getRequestDispatcher("movie.jsp").forward(req, resp);
         }
+    }
+
+    private void doPOst(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req,resp);
+
+        String movieName = req.getParameter("title");
     }
 }
