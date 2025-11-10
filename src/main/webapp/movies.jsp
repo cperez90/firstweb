@@ -12,7 +12,7 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Movie JSP</h1>
+<h1>Movies JSP</h1>
 <%--<% List<Movie> movies = (List<Movie>) request.getAttribute("movies"); %>
 <% for(Movie movie: movies) { %>
     <%= movie.getTitle() + "<br>"%>

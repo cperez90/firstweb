@@ -2,13 +2,14 @@ package org.daw.firstweb.service;
 
 import org.daw.firstweb.model.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.NoSuchElementException;
 
 public class MovieServiceStaticImpl implements MovieService{
 
-    private static List<Movie> movies;
+    private static List<Movie> movies = new ArrayList<>();
 
     public List<Movie> findAll(){
         if (movies == null){

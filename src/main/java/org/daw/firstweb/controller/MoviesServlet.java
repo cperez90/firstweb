@@ -39,6 +39,7 @@ public class MoviesServlet extends HttpServlet {
         service.addMovie(new Movie(3, "Interstellar", "Explorers travel through a wormhole to save humanity."));
         service.addMovie(new Movie(4, "The Dark Knight", "Batman faces the Joker in Gotham City."));
         service.addMovie(new Movie(5, "Avatar", "A soldier becomes part of an alien world."));
+
         if (req.getParameter("id") == null) {
             req.setAttribute("movies", service.findAll());
             req.getRequestDispatcher("movies.jsp").forward(req, resp);
