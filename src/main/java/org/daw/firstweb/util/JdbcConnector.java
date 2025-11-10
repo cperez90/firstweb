@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 @Getter
 public class JdbcConnector {
@@ -11,16 +12,19 @@ public class JdbcConnector {
     private static String user = "root";
     private static String password = "root";
 
-    public Connection getJdbc(){
+   static {
         try {
             // The newInstance() call is a work around for some
             // broken Java implementations
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(url,user,password);
         } catch (Exception ex) {
             // handle the error
             throw new RuntimeException("No mysql jdbc driver found");
         }
+   }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, user,password);
     }
 }

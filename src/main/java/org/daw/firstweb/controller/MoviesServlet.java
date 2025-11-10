@@ -80,7 +80,7 @@ public class MoviesServlet extends HttpServlet {
         }
     }
 
-    private void doPOst(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req,resp);
 
         String movieName = req.getParameter("title");
