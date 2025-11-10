@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.service.MovieServiceStaticImpl;
+import org.daw.firstweb.util.JdbcConnector;
 
 import java.io.IOException;
+import java.sql.*;
 
 @WebServlet(name = "movieServlet", value = "/movies")
 public class MoviesServlet extends HttpServlet {
@@ -34,11 +36,37 @@ public class MoviesServlet extends HttpServlet {
         req.getRequestDispatcher("movie.js").forward(req,resp);*/
 
         MovieServiceStaticImpl service = new MovieServiceStaticImpl();
-        service.addMovie(new Movie(1, "Inception", "A thief enters dreams to steal secrets."));
+        JdbcConnector jdbcConnector = new JdbcConnector();
+        /*service.addMovie(new Movie(1, "Inception", "A thief enters dreams to steal secrets."));
         service.addMovie(new Movie(2, "The Matrix", "A hacker discovers the truth about reality."));
         service.addMovie(new Movie(3, "Interstellar", "Explorers travel through a wormhole to save humanity."));
         service.addMovie(new Movie(4, "The Dark Knight", "Batman faces the Joker in Gotham City."));
-        service.addMovie(new Movie(5, "Avatar", "A soldier becomes part of an alien world."));
+        service.addMovie(new Movie(5, "Avatar", "A soldier becomes part of an alien world."));*/
+
+        //conncexio jdbc
+        //load driver
+
+        String nameParam = "rings";
+        Connection conn = jdbcConnector.getJdbc();
+        try {
+
+            PreparedStatement pst = conn.prepareStatement("select * from movies" /*where name like ? and rate > ?*/);
+            //pst.setString(1,nameParam);
+            //pst.setFloat(2,4);
+            ResultSet result = pst.executeQuery();
+            while (result.next()){
+                int movieId = result.getInt("id");
+                String movieTitle = result.getString("title");
+                String movieDescription = result.getString("description");
+                int movieYear = result.getInt("year");
+                Movie movie = new Movie(movieId,movieTitle,movieDescription,movieYear);
+
+                service.addMovie(movie);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e + " No hace la conexion");
+        }
 
         if (req.getParameter("id") == null) {
             req.setAttribute("movies", service.findAll());

@@ -28,6 +28,7 @@ public class MovieServiceStaticImpl implements MovieService{
         throw new NoSuchElementException("No existe el id: " + id);
     }
 
+    @Override
     public boolean addMovie(Movie newMovie) {
         if (movies.contains(newMovie)) {
             return false;
@@ -37,6 +38,7 @@ public class MovieServiceStaticImpl implements MovieService{
         }
     }
 
+    @Override
     public Movie deleteMovieById(int id){
         for (Movie movie : movies) {
             if (Objects.equals(movie.getId(), id)) {
