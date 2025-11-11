@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.daw.firstweb.model.Movie;
+import org.daw.firstweb.service.MovieServiceOrmImpl;
 import org.daw.firstweb.service.MovieServiceStaticImpl;
 import org.daw.firstweb.util.JdbcConnector;
 
@@ -15,6 +16,9 @@ import java.sql.*;
 
 @WebServlet(name = "movieServlet", value = "/movies")
 public class MoviesServlet extends HttpServlet {
+
+    MovieServiceOrmImpl service = new MovieServiceOrmImpl();
+    //JdbcConnector jdbcConnector = new JdbcConnector();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -35,8 +39,6 @@ public class MoviesServlet extends HttpServlet {
 
         req.getRequestDispatcher("movie.js").forward(req,resp);*/
 
-        MovieServiceStaticImpl service = new MovieServiceStaticImpl();
-        JdbcConnector jdbcConnector = new JdbcConnector();
         /*service.addMovie(new Movie(1, "Inception", "A thief enters dreams to steal secrets."));
         service.addMovie(new Movie(2, "The Matrix", "A hacker discovers the truth about reality."));
         service.addMovie(new Movie(3, "Interstellar", "Explorers travel through a wormhole to save humanity."));
@@ -46,11 +48,16 @@ public class MoviesServlet extends HttpServlet {
         //conncexio jdbc
         //load driver
 
-        String nameParam = "rings";
-        Connection conn = jdbcConnector.getJdbc();
+        /*String nameParam = "rings";
+        Connection conn = null;
+        try {
+            conn = JdbcConnector.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         try {
 
-            PreparedStatement pst = conn.prepareStatement("select * from movies" /*where name like ? and rate > ?*/);
+            PreparedStatement pst = conn.prepareStatement("select * from movies" where name like ? and rate > ?);
             //pst.setString(1,nameParam);
             //pst.setFloat(2,4);
             ResultSet result = pst.executeQuery();
@@ -66,7 +73,7 @@ public class MoviesServlet extends HttpServlet {
             conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e + " No hace la conexion");
-        }
+        }*/
 
         if (req.getParameter("id") == null) {
             req.setAttribute("movies", service.findAll());

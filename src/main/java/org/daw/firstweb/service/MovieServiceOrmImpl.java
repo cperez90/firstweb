@@ -9,15 +9,23 @@ import java.util.List;
 public class MovieServiceOrmImpl implements MovieService{
     @Override
     public List<Movie> findAll() {
-        EntityManager em = ConnectionManager.getEntityMabager();
+        EntityManager em = ConnectionManager.getEntityManager();
+        List<Movie> movies;
 
-        List<Movie> movies = em.createQuery("select m from Movie m",Movie.class);
-        return List.of();
+        try {
+            movies = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+
+        return movies;
     }
 
     @Override
     public Movie findById(int id) {
-        EntityManager em = ConnectionManager.getEntityMabager();
+        EntityManager em = ConnectionManager.getEntityManager();
 
         Movie movie = em.find(Movie.class,id);
         em.close();

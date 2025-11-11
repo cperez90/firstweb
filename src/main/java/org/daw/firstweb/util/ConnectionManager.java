@@ -8,7 +8,7 @@ public class ConnectionManager {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("moviesMysql");
 
-    public static EntityManager getEntityMabager(){
+    public static EntityManager getEntityManager(){
         return emf.createEntityManager();
     }
 }

@@ -13,14 +13,14 @@ import lombok.Setter;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private int year;
     @Transient
     private float rate;
 
-    public Movie(int id, String title, String description,int year, float rate) {
+    public Movie(Long id, String title, String description,int year, float rate) {
         this.id = id;
         this.title = title;
         this.description = description;
