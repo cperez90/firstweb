@@ -6,9 +6,16 @@ import jakarta.persistence.Persistence;
 
 public class ConnectionManager {
 
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("moviesMysql");
+    private static EntityManagerFactory emf;
 
     public static EntityManager getEntityManager(){
+        if (emf == null) {
+            synchronized (ConnectionManager.class) {
+                if (emf == null) {
+                    emf = Persistence.createEntityManagerFactory("moviesMysql");
+                }
+            }
+        }
         return emf.createEntityManager();
     }
 }
