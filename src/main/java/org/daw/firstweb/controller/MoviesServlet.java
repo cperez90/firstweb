@@ -90,8 +90,60 @@ public class MoviesServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req,resp);
+        resp.setContentType("text/plain; charset=UTF-8");
 
-        String movieName = req.getParameter("title");
+        try {
+            String method = req.getParameter("_method");
+
+            if ("DELETE".equalsIgnoreCase(method)) {
+                doDelete(req, resp);
+                return;
+            }
+
+            String movieName = req.getParameter("title");
+            String movieDescription = req.getParameter("description");
+            String movieYear = req.getParameter("year");
+
+            if (movieName != null && movieDescription != null && movieYear != null) {
+                Movie newMovie = new Movie(movieName, movieDescription, Integer.parseInt(movieYear));
+                service.addMovie(newMovie);
+            }
+            req.setAttribute("movies", service.findAll());
+            req.getRequestDispatcher("movies.jsp").forward(req, resp);
+        }catch (RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("Error interno del servidor: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idParam = req.getParameter("id");
+
+        if (idParam == null || idParam.isBlank()) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("Error: Falta el parámetro 'id'.");
+            return;
+        }
+
+        try {
+            Long id = Long.parseLong(idParam);
+            Movie deleted = service.deleteMovieById(id);
+
+            if (deleted != null) {
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.getWriter().write("Película eliminada: " + deleted.getTitle());
+            } else {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("No se encontró ninguna película con ID " + id);
+            }
+
+            req.setAttribute("movies", service.findAll());
+            req.getRequestDispatcher("movies.jsp").forward(req, resp);
+
+        }catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("Error interno: " + e.getMessage());
+        }
     }
 }

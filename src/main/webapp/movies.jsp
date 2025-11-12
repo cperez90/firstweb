@@ -22,12 +22,37 @@
         ${movie.id}<br>
         ${movie.title}<br>
         ${movie.description}<br>
+        ${movie.year}<br>
     </c:forEach>
 </p>
-<form action="movie" method="post">
-    <input type="text" name="title"/>
-    <input type="text" name="description"/>
-    <input type="text" name="year">
+<h2>Add Movie</h2>
+<form action="movies" method="post">
+
+    <p>Title: <label>
+        <input type="text" name="title"/>
+    </label></p>
+    <p>Description:
+    <label>
+        <input type="text" name="description"/>
+    </label>
+    </p>
+    <p>Year:
+    <label>
+        <input type="text" name="year" />
+    </label>
+    </p>
+    <input type="submit" name="submit" />
+
+</form>
+<h2>Delete Movie</h2>
+<form action="movies" method="post">
+    <p>Id Movie:
+        <label>
+            <input type="text" name="id">
+        </label>
+    </p>
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" name="submit" />
 </form>
 </body>
 </html>

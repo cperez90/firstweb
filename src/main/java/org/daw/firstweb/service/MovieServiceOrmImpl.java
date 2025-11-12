@@ -39,9 +39,6 @@ public class MovieServiceOrmImpl implements MovieService{
     public boolean addMovie(Movie newMovie) {
         EntityManager em = ConnectionManager.getEntityManager();
         try {
-            if (this.findById(newMovie.getId()) != null) {
-                return false;
-            }
             em.getTransaction().begin();
             em.persist(newMovie);
             em.getTransaction().commit();
@@ -59,6 +56,25 @@ public class MovieServiceOrmImpl implements MovieService{
 
     @Override
     public Movie deleteMovieById(Long id) {
-        return null;
+        EntityManager em = ConnectionManager.getEntityManager();
+        Movie movieDelete;
+        try {
+            em.getTransaction().begin();
+            movieDelete = em.find(Movie.class,id);
+            if (movieDelete != null){
+                em.remove(movieDelete);
+            }
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error al eliminar la película con ID " + id, e);
+
+        } finally {
+            em.close();
+        }
+        return movieDelete;
     }
 }
