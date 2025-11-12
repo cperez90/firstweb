@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.service.MovieServiceOrmImpl;
-import org.daw.firstweb.service.MovieServiceStaticImpl;
-import org.daw.firstweb.util.JdbcConnector;
 
 import java.io.IOException;
 import java.sql.*;
@@ -18,7 +16,6 @@ import java.sql.*;
 public class MoviesServlet extends HttpServlet {
 
     MovieServiceOrmImpl service = new MovieServiceOrmImpl();
-    //JdbcConnector jdbcConnector = new JdbcConnector();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -79,7 +76,7 @@ public class MoviesServlet extends HttpServlet {
             req.setAttribute("movies", service.findAll());
             req.getRequestDispatcher("movies.jsp").forward(req, resp);
         } else {
-            Long id = Long.valueOf(req.getParameter("id"));
+            long id = Long.parseLong(req.getParameter("id"));
             if (id >= 0 && id < service.findAll().size()) {
                 req.setAttribute("movie", service.findById(id));
                 req.getRequestDispatcher("movie.jsp").forward(req, resp);
@@ -115,12 +112,12 @@ public class MoviesServlet extends HttpServlet {
         }
     }
 
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idParam = req.getParameter("id");
 
         if (idParam == null || idParam.isBlank()) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("Error: Falta el parámetro 'id'.");
+            resp.getWriter().write("Error: 'id'.");
             return;
         }
 
