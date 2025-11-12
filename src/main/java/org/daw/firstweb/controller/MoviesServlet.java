@@ -84,7 +84,6 @@ public class MoviesServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/plain; charset=UTF-8");
 
         try {
             String method = req.getParameter("_method");
