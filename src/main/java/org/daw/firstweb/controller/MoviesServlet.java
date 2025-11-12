@@ -111,9 +111,7 @@ public class MoviesServlet extends HttpServlet {
             req.setAttribute("movies", service.findAll());
             req.getRequestDispatcher("movies.jsp").forward(req, resp);
         }catch (RuntimeException e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("Error interno del servidor: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -128,22 +126,13 @@ public class MoviesServlet extends HttpServlet {
 
         try {
             Long id = Long.parseLong(idParam);
-            Movie deleted = service.deleteMovieById(id);
-
-            if (deleted != null) {
-                resp.setStatus(HttpServletResponse.SC_OK);
-                resp.getWriter().write("Película eliminada: " + deleted.getTitle());
-            } else {
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                resp.getWriter().write("No se encontró ninguna película con ID " + id);
-            }
+            service.deleteMovieById(id);
 
             req.setAttribute("movies", service.findAll());
             req.getRequestDispatcher("movies.jsp").forward(req, resp);
 
         }catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("Error interno: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
