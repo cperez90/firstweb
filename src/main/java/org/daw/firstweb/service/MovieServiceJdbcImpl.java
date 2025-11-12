@@ -58,8 +58,7 @@ public class MovieServiceJdbcImpl implements MovieService{
                 return false;
             } else {
                 Connection conn = connection;
-                String var10001 = newMovie.getTitle();
-                conn.prepareStatement("insert into movies (title, description) values (" + var10001 + ", " + newMovie.getDescription() + ", " + newMovie.getYear() + ")");
+                conn.prepareStatement("insert into movies (title, description) values (" + newMovie.getTitle() + ", " + newMovie.getDescription() + ", " + newMovie.getYear() + ")");
                 return true;
             }
         } catch (SQLException e) {
