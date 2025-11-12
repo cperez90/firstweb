@@ -42,9 +42,6 @@ public class MoviesServlet extends HttpServlet {
         service.addMovie(new Movie(4, "The Dark Knight", "Batman faces the Joker in Gotham City."));
         service.addMovie(new Movie(5, "Avatar", "A soldier becomes part of an alien world."));*/
 
-        //conncexio jdbc
-        //load driver
-
         /*String nameParam = "rings";
         Connection conn = null;
         try {
