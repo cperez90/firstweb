@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.util.ConnectionManager;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class MovieServiceOrmImpl implements MovieService{
@@ -24,7 +26,7 @@ public class MovieServiceOrmImpl implements MovieService{
     }
 
     @Override
-    public Movie findById(int id) {
+    public Movie findById(Long id) {
         EntityManager em = ConnectionManager.getEntityManager();
 
         Movie movie = em.find(Movie.class,id);
@@ -35,11 +37,28 @@ public class MovieServiceOrmImpl implements MovieService{
 
     @Override
     public boolean addMovie(Movie newMovie) {
-        return false;
+        EntityManager em = ConnectionManager.getEntityManager();
+        try {
+            if (this.findById(newMovie.getId()) != null) {
+                return false;
+            }
+            em.getTransaction().begin();
+            em.persist(newMovie);
+            em.getTransaction().commit();
+            return true;
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
     }
 
     @Override
-    public Movie deleteMovieById(int id) {
+    public Movie deleteMovieById(Long id) {
         return null;
     }
 }

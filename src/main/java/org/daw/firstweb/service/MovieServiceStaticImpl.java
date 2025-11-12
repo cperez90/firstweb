@@ -19,7 +19,7 @@ public class MovieServiceStaticImpl implements MovieService{
     }
 
     @Override
-    public Movie findById(int id) {
+    public Movie findById(Long id) {
         for (Movie movie : movies) {
             if (Objects.equals(movie.getId(), id)){
                 return movie;
@@ -39,7 +39,7 @@ public class MovieServiceStaticImpl implements MovieService{
     }
 
     @Override
-    public Movie deleteMovieById(int id){
+    public Movie deleteMovieById(Long id){
         for (Movie movie : movies) {
             if (Objects.equals(movie.getId(), id)) {
                 movies.remove(movie);

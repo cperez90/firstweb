@@ -37,7 +37,7 @@ public class MovieServiceJdbcImpl implements MovieService{
     }
 
     @Override
-    public Movie findById(int id) {
+    public Movie findById(Long id) {
         try {
             PreparedStatement pst = connection.prepareStatement("select * from movies where id = " + id);
             ResultSet result = pst.executeQuery();
@@ -54,7 +54,7 @@ public class MovieServiceJdbcImpl implements MovieService{
     @Override
     public boolean addMovie(Movie newMovie) {
         try {
-            if (this.findById(Math.toIntExact(newMovie.getId())) != null) {
+            if (this.findById(newMovie.getId()) != null) {
                 return false;
             } else {
                 Connection conn = connection;
@@ -68,7 +68,7 @@ public class MovieServiceJdbcImpl implements MovieService{
     }
 
     @Override
-    public Movie deleteMovieById(int id) {
+    public Movie deleteMovieById(Long id) {
         Movie movie = this.findById(id);
 
         try {

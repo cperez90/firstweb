@@ -78,13 +78,15 @@ public class MoviesServlet extends HttpServlet {
         if (req.getParameter("id") == null) {
             req.setAttribute("movies", service.findAll());
             req.getRequestDispatcher("movies.jsp").forward(req, resp);
+        } else {
+            Long id = Long.valueOf(req.getParameter("id"));
+            if (id >= 0 && id < service.findAll().size()) {
+                req.setAttribute("movie", service.findById(id));
+                req.getRequestDispatcher("movie.jsp").forward(req, resp);
+            }
         }
 
-        int id = Integer.parseInt(req.getParameter("id"));
-        if (id >= 0 && id < service.findAll().size()) {
-            req.setAttribute("movie", service.findById(id));
-            req.getRequestDispatcher("movie.jsp").forward(req, resp);
-        }
+
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

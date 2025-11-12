@@ -24,5 +24,10 @@
         ${movie.description}<br>
     </c:forEach>
 </p>
+<form action="movie" method="post">
+    <input type="text" name="title"/>
+    <input type="text" name="description"/>
+    <input type="text" name="year">
+</form>
 </body>
 </html>

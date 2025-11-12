@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Transient
     private Long id;
     private String title;
     private String description;
