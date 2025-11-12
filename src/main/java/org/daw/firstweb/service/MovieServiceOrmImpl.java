@@ -4,8 +4,6 @@ import jakarta.persistence.EntityManager;
 import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.util.ConnectionManager;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class MovieServiceOrmImpl implements MovieService{
