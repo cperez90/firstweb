@@ -1,25 +1,42 @@
 package org.daw.firstweb.controller;
 
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.daw.firstweb.model.Movie;
+import org.daw.firstweb.dto.MovieDto;
+import org.daw.firstweb.service.MovieService;
 import org.daw.firstweb.service.MovieServiceOrmImpl;
 
 import java.io.IOException;
-import java.sql.*;
 
 @WebServlet(name = "movieServlet", value = "/movies")
 public class MoviesServlet extends HttpServlet {
 
-    MovieServiceOrmImpl service = new MovieServiceOrmImpl();
+    private MovieService service;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init(){
+        service = new MovieServiceOrmImpl();
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getParameter("_method");
+
+        if (method != null) {
+            if (method.equalsIgnoreCase("DELETE")) {
+                doDelete(req, resp);
+                return;
+            }
+            if (method.equalsIgnoreCase("PUT")) {
+                doPut(req, resp);
+                return;
+            }
+        }
+
+        super.service(req, resp);
     }
 
     @Override
@@ -79,26 +96,18 @@ public class MoviesServlet extends HttpServlet {
                 req.getRequestDispatcher("movie.jsp").forward(req, resp);
             }
         }
-
-
     }
 
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try {
-            String method = req.getParameter("_method");
-
-            if ("DELETE".equalsIgnoreCase(method)) {
-                doDelete(req, resp);
-                return;
-            }
-
             String movieName = req.getParameter("title");
             String movieDescription = req.getParameter("description");
             String movieYear = req.getParameter("year");
 
             if (movieName != null && movieDescription != null && movieYear != null) {
-                Movie newMovie = new Movie(movieName, movieDescription, Integer.parseInt(movieYear));
+                MovieDto newMovie = new MovieDto(movieName, movieDescription, Integer.parseInt(movieYear));
                 service.addMovie(newMovie);
             }
             req.setAttribute("movies", service.findAll());
@@ -108,6 +117,7 @@ public class MoviesServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idParam = req.getParameter("id");
 
@@ -127,5 +137,10 @@ public class MoviesServlet extends HttpServlet {
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     }
 }

@@ -1,6 +1,6 @@
 package org.daw.firstweb.service;
 
-import org.daw.firstweb.model.Movie;
+import org.daw.firstweb.dto.MovieDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.NoSuchElementException;
 
 public class MovieServiceStaticImpl implements MovieService{
 
-    private static List<Movie> movies = new ArrayList<>();
+    private static List<MovieDto> movies = new ArrayList<>();
 
-    public List<Movie> findAll(){
+    public List<MovieDto> findAll(){
         if (movies == null){
             throw new NoSuchElementException("No hay movies");
         }
@@ -19,8 +19,8 @@ public class MovieServiceStaticImpl implements MovieService{
     }
 
     @Override
-    public Movie findById(Long id) {
-        for (Movie movie : movies) {
+    public MovieDto findById(Long id) {
+        for (MovieDto movie : movies) {
             if (Objects.equals(movie.getId(), id)){
                 return movie;
             }
@@ -29,7 +29,7 @@ public class MovieServiceStaticImpl implements MovieService{
     }
 
     @Override
-    public boolean addMovie(Movie newMovie) {
+    public boolean addMovie(MovieDto newMovie) {
         if (movies.contains(newMovie)) {
             return false;
         } else {
@@ -39,8 +39,13 @@ public class MovieServiceStaticImpl implements MovieService{
     }
 
     @Override
-    public Movie deleteMovieById(Long id){
-        for (Movie movie : movies) {
+    public MovieDto updateMovie(MovieDto movie) {
+        return null;
+    }
+
+    @Override
+    public MovieDto deleteMovieById(Long id){
+        for (MovieDto movie : movies) {
             if (Objects.equals(movie.getId(), id)) {
                 movies.remove(movie);
                 return movie;

@@ -1,14 +1,14 @@
 package org.daw.firstweb.service;
 
-import org.daw.firstweb.model.Movie;
+import org.daw.firstweb.dto.MovieDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface MovieService {
 
-    List<Movie> findAll();
-    Movie findById(Long id);
-    boolean addMovie(Movie newMovie);
-    Movie deleteMovieById(Long id);
+    List<MovieDto> findAll();
+    MovieDto findById(Long id);
+    boolean addMovie(MovieDto newMovie);
+    MovieDto updateMovie(MovieDto movie);
+    MovieDto deleteMovieById(Long id);
 }

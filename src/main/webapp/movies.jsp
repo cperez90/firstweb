@@ -9,50 +9,58 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Movies</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Movies JSP</h1>
-<%--<% List<Movie> movies = (List<Movie>) request.getAttribute("movies"); %>
-<% for(Movie movie: movies) { %>
-    <%= movie.getTitle() + "<br>"%>
-<% } %>--%>
-<p>
+
+<h1>Movies</h1>
+
+<table class="movie-table">
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Año</th>
+        <th>Acciones</th>
+    </tr>
+
     <c:forEach var="movie" items="${movies}">
-        ${movie.id}<br>
-        ${movie.title}<br>
-        ${movie.description}<br>
-        ${movie.year}<br>
+        <tr>
+            <td>${movie.id}</td>
+            <td>${movie.title}</td>
+            <td>${movie.description}</td>
+            <td>${movie.year}</td>
+            <td>
+                <form action="${pageContext.request.contextPath}/movies" method="get" style="display:inline;">
+                    <input type="hidden" name="id" value="${movie.id}">
+                    <button type="submit" class="btn btn-view">Ver</button>
+                </form>
+                <form action="movies" method="post" class="delete-form">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="hidden" name="id" value="${movie.id}"/>
+                    <button type="submit" class="delete-btn">Eliminar</button>
+                </form>
+            </td>
+        </tr>
     </c:forEach>
-</p>
-<h2>Add Movie</h2>
-<form action="movies" method="post">
+</table>
 
-    <p>Title: <label>
-        <input type="text" name="title"/>
-    </label></p>
-    <p>Description:
-    <label>
-        <input type="text" name="description"/>
-    </label>
-    </p>
-    <p>Year:
-    <label>
-        <input type="text" name="year" />
-    </label>
-    </p>
-    <input type="submit" name="submit" />
+<h2>Añadir nueva película</h2>
 
+<form action="movies" method="post" class="add-form">
+
+    <label>Título:</label>
+    <input type="text" name="title" required />
+
+    <label>Descripción:</label>
+    <input type="text" name="description" required />
+
+    <label>Año:</label>
+    <input type="text" name="year" required />
+
+    <input type="submit" value="Añadir película" class="submit-btn"/>
 </form>
-<h2>Delete Movie</h2>
-<form action="movies" method="post">
-    <p>Id Movie:
-        <label>
-            <input type="text" name="id">
-        </label>
-    </p>
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" name="submit" />
-</form>
+
 </body>
 </html>

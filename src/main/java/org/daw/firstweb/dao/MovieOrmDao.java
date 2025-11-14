@@ -1,38 +1,41 @@
-package org.daw.firstweb.service;
+package org.daw.firstweb.dao;
 
 import jakarta.persistence.EntityManager;
-import org.daw.firstweb.dao.MovieDao;
-import org.daw.firstweb.dao.MovieOrmDao;
-import org.daw.firstweb.dto.MovieDto;
 import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.util.ConnectionManager;
-import org.daw.firstweb.util.MovieMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MovieServiceOrmImpl implements MovieService{
-    MovieDao mvDao = new MovieOrmDao();
+public class MovieOrmDao implements MovieDao{
 
     @Override
-    public List<MovieDto> findAll() {
-        List<Movie> moviesDao = mvDao.findAll();
-        List<MovieDto> moviesDto = new ArrayList<>();
-        for (Movie mv : moviesDao){
-            MovieDto mvdto = MovieMapper.mapToDto(mv);
-            moviesDto.add(mvdto);
+    public List<Movie> findAll() {
+        EntityManager em = ConnectionManager.getEntityManager();
+        List<Movie> movies;
+
+        try {
+            movies = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
         }
-        return moviesDto;
+
+        return movies;
     }
 
     @Override
-    public MovieDto findById(Long id) {
-        Movie movieDao = mvDao.findById(id);
-        return MovieMapper.mapToDto(movieDao);
+    public Movie findById(Long id) {
+        EntityManager em = ConnectionManager.getEntityManager();
+
+        Movie movie = em.find(Movie.class,id);
+        em.close();
+
+        return movie;
     }
 
     @Override
-    public boolean addMovie(MovieDto newMovie) {
+    public boolean addMovie(Movie newMovie) {
         EntityManager em = ConnectionManager.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -51,17 +54,17 @@ public class MovieServiceOrmImpl implements MovieService{
     }
 
     @Override
-    public MovieDto updateMovie(MovieDto movie) {
+    public Movie updateMovie(Movie movie) {
         return null;
     }
 
     @Override
-    public MovieDto deleteMovieById(Long id) {
+    public Movie deleteMovieById(Long id) {
         EntityManager em = ConnectionManager.getEntityManager();
-        MovieDto movieDelete;
+        Movie movieDelete;
         try {
             em.getTransaction().begin();
-            movieDelete = em.find(MovieDto.class,id);
+            movieDelete = em.find(Movie.class,id);
             if (movieDelete != null){
                 em.remove(movieDelete);
             }

@@ -1,6 +1,6 @@
-package org.daw.firstweb.service;
+package org.daw.firstweb.dao;
 
-import org.daw.firstweb.dto.MovieDto;
+import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.util.JdbcConnector;
 
 import java.sql.Connection;
@@ -10,12 +10,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieServiceJdbcImpl implements MovieService{
+public class MovieJdbcDao implements MovieDao{
     public static Connection connection;
+    static {
+        try {
+            connection = JdbcConnector.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
-    public List<MovieDto> findAll() {
-        List<MovieDto> movies = new ArrayList<>();
+    public List<Movie> findAll() {
+        List<Movie> movies = new ArrayList<>();
 
         try {
             PreparedStatement pst = connection.prepareStatement("select * from movies");
@@ -26,7 +34,7 @@ public class MovieServiceJdbcImpl implements MovieService{
                 String movieTitle = result.getString("title");
                 String movieDescription = result.getString("description");
                 int movieYear = result.getInt("year");
-                MovieDto movie = new MovieDto(movieId, movieTitle, movieDescription, movieYear);
+                Movie movie = new Movie(movieId, movieTitle, movieDescription, movieYear,0);
                 movies.add(movie);
             }
 
@@ -37,7 +45,7 @@ public class MovieServiceJdbcImpl implements MovieService{
     }
 
     @Override
-    public MovieDto findById(Long id) {
+    public org.daw.firstweb.model.Movie findById(Long id) {
         String sql = "SELECT * FROM movies WHERE id = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setLong(1, id);
@@ -48,7 +56,7 @@ public class MovieServiceJdbcImpl implements MovieService{
                     String movieDescription = result.getString("description");
                     int movieYear = result.getInt("year");
 
-                    return new MovieDto(movieId, movieTitle, movieDescription, movieYear);
+                    return new Movie(movieId, movieTitle, movieDescription, movieYear,0);
                 } else {
                     return null;
                 }
@@ -59,7 +67,7 @@ public class MovieServiceJdbcImpl implements MovieService{
     }
 
     @Override
-    public boolean addMovie(MovieDto newMovie) {
+    public boolean addMovie(Movie newMovie) {
         String sql = "INSERT INTO movies (description, title, year) VALUES (?, ?, ?)";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
 
@@ -71,19 +79,19 @@ public class MovieServiceJdbcImpl implements MovieService{
                 throw new SQLException("No se insertó ninguna fila.");
             }
             return true;
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-}
 
     @Override
-    public MovieDto updateMovie(MovieDto movie) {
+    public Movie updateMovie(Movie movie) {
         return null;
     }
 
     @Override
-    public MovieDto deleteMovieById(Long id) {
-        MovieDto movie = this.findById(id);
+    public Movie deleteMovieById(Long id) {
+       Movie movie = this.findById(id);
         if (movie == null) {
             return null;
         }
@@ -95,14 +103,6 @@ public class MovieServiceJdbcImpl implements MovieService{
                 throw new SQLException("No se eliminó ninguna fila con id = " + id);
             }
             return movie;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static {
-        try {
-            connection = JdbcConnector.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
