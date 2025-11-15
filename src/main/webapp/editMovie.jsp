@@ -29,10 +29,12 @@
     <label>Año:</label>
     <input type="number" name="year" value="${movie.year}" required>
 
-    <button type="submit" class="btn">Guardar cambios</button>
+    <button type="submit" class="btn" style="margin-top: 20px;">Guardar cambios</button>
 </form>
 
-<p><a href="movies?id=${movie.id}" class="btn-back">Volver</a></p>
+<div class="back-wrapper">
+    <a href="movies?id=${movie.id}" class="btn-back">Volver</a>
+</div>
 
 </body>
 </html>

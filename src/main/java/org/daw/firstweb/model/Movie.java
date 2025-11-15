@@ -27,6 +27,7 @@ public class Movie {
     @Transient
     private float rate;
 
+    @Transient
     @OneToMany
     List<Comment> comments;
 

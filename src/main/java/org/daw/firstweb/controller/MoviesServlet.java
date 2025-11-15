@@ -148,11 +148,11 @@ public class MoviesServlet extends HttpServlet {
             MovieDto movieDto = new MovieDto(id,title,description,year);
             service.updateMovie(movieDto);
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("Película actualizada correctamente.");
             resp.sendRedirect("movies?id=" + id);
         }catch (Exception e) {
+            e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("Error al actualizar la película: " + e.getMessage());
+            resp.getWriter().write("Error al actualizar la movie: " + e.getMessage());
         }
     }
 }
