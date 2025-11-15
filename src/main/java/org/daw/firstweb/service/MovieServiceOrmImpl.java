@@ -33,22 +33,9 @@ public class MovieServiceOrmImpl implements MovieService{
 
     @Override
     public boolean addMovie(MovieDto newMovie) {
-        EntityManager em = ConnectionManager.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(newMovie);
-            em.getTransaction().commit();
-            return true;
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            em.close();
-        }
+        return false;
     }
+
 
     @Override
     public MovieDto updateMovie(MovieDto movie) {

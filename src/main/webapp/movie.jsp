@@ -11,13 +11,15 @@
 <html>
 <head>
     <title>Movie Jsp</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<h1>Detalle de Película</h1>
 <div class="movie-card">
-    <p><strong>ID:</strong><c:out value="${movie.id}" /></p>
-    <p><strong>Título:</strong><c:out value="${movie.title}" /></p>
-    <p><strong>Descripción:</strong> ${movie.description}</p>
-    <p><strong>Año:</strong><c:out value="${movie.description}" /></p>
+    <p><strong>ID: </strong><c:out value="${movie.id}" /></p>
+    <p><strong>Título: </strong><c:out value="${movie.title}" /></p>
+    <p><strong>Descripción: </strong> ${movie.description}</p>
+    <p><strong>Año: </strong><c:out value="${movie.year}" /></p>
 </div>
 
 <form action="movies" method="post" class="delete-form">

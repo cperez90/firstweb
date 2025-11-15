@@ -32,7 +32,7 @@
             <td>${movie.description}</td>
             <td>${movie.year}</td>
             <td>
-                <form action="${pageContext.request.contextPath}/movies" method="get" style="display:inline;">
+                <form action="${pageContext.request.contextPath}/movies" method="get" >
                     <input type="hidden" name="id" value="${movie.id}">
                     <button type="submit" class="btn btn-view">Ver</button>
                 </form>
