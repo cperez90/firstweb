@@ -26,12 +26,12 @@ public class MovieOrmDao implements MovieDao{
 
     @Override
     public Movie findById(Long id) {
-        EntityManager em = ConnectionManager.getEntityManager();
 
-        Movie movie = em.find(Movie.class,id);
-        em.close();
-
-        return movie;
+        try (EntityManager em = ConnectionManager.getEntityManager()) {
+            return em.find(Movie.class, id);
+        } catch (Exception e) {
+            throw new RuntimeException("No se encontro la movie", e);
+        }
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MovieOrmDao implements MovieDao{
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw new RuntimeException(e);
+            throw new RuntimeException("No se pudo agregar la movie", e);
         } finally {
             em.close();
         }
@@ -55,7 +55,17 @@ public class MovieOrmDao implements MovieDao{
 
     @Override
     public Movie updateMovie(Movie movie) {
-        return null;
+        EntityManager em = ConnectionManager.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(movie);
+            em.getTransaction().commit();
+            return movie;
+        }catch (Exception e){
+            throw new RuntimeException("No se ha podido actualizar" , e);
+        }finally {
+            em.close();
+        }
     }
 
     @Override

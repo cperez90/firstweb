@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.daw.firstweb.dto.MovieDto;
 import org.daw.firstweb.service.MovieService;
-import org.daw.firstweb.service.MovieServiceOrmImpl;
+import org.daw.firstweb.service.MovieServiceImpl;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class MoviesServlet extends HttpServlet {
 
     @Override
     public void init(){
-        service = new MovieServiceOrmImpl();
+        service = new MovieServiceImpl();
     }
 
     @Override
@@ -35,7 +35,6 @@ public class MoviesServlet extends HttpServlet {
                 return;
             }
         }
-
         super.service(req, resp);
     }
 
@@ -91,7 +90,10 @@ public class MoviesServlet extends HttpServlet {
             req.getRequestDispatcher("movies.jsp").forward(req, resp);
         } else {
             long id = Long.parseLong(req.getParameter("id"));
-            if (id >= 0 && id < service.findAll().size()) {
+            if (req.getParameter("title") != null) {
+                req.setAttribute("movie", service.findById(id));
+                req.getRequestDispatcher("editMovie.jsp").forward(req, resp);
+            }else {
                 req.setAttribute("movie", service.findById(id));
                 req.getRequestDispatcher("movie.jsp").forward(req, resp);
             }
@@ -99,7 +101,7 @@ public class MoviesServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         try {
             String movieName = req.getParameter("title");
@@ -110,8 +112,7 @@ public class MoviesServlet extends HttpServlet {
                 MovieDto newMovie = new MovieDto(movieName, movieDescription, Integer.parseInt(movieYear));
                 service.addMovie(newMovie);
             }
-            req.setAttribute("movies", service.findAll());
-            req.getRequestDispatcher("movies.jsp").forward(req, resp);
+            resp.sendRedirect("movies");
         }catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -131,16 +132,27 @@ public class MoviesServlet extends HttpServlet {
             Long id = Long.parseLong(idParam);
             service.deleteMovieById(id);
 
-            req.setAttribute("movies", service.findAll());
-            req.getRequestDispatcher("movies.jsp").forward(req, resp);
-
+            resp.sendRedirect("movies");
         }catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Long id = Long.parseLong(req.getParameter("id"));
+        String title = req.getParameter("title");
+        String description = req.getParameter("description");
+        int year = Integer.parseInt(req.getParameter("year"));
+        try {
+            MovieDto movieDto = new MovieDto(id,title,description,year);
+            service.updateMovie(movieDto);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("Película actualizada correctamente.");
+            resp.sendRedirect("movies?id=" + id);
+        }catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("Error al actualizar la película: " + e.getMessage());
+        }
     }
 }

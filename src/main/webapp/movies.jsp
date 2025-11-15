@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Movies</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
 </head>
 <body>
 
@@ -32,15 +32,17 @@
             <td>${movie.description}</td>
             <td>${movie.year}</td>
             <td>
-                <form action="${pageContext.request.contextPath}/movies" method="get" >
-                    <input type="hidden" name="id" value="${movie.id}">
-                    <button type="submit" class="btn btn-view">Ver</button>
-                </form>
-                <form action="movies" method="post" class="delete-form">
-                    <input type="hidden" name="_method" value="DELETE"/>
-                    <input type="hidden" name="id" value="${movie.id}"/>
-                    <button type="submit" class="delete-btn">Eliminar</button>
-                </form>
+                <div class="action-buttons">
+                    <form action="${pageContext.request.contextPath}/movies" method="get" >
+                        <input type="hidden" name="id" value="${movie.id}">
+                        <button type="submit" class="btn">Ver</button>
+                    </form>
+                    <form action="movies" method="post" class="delete-form">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <input type="hidden" name="id" value="${movie.id}"/>
+                        <button type="submit" class="delete-btn">Eliminar</button>
+                    </form>
+                </div>
             </td>
         </tr>
     </c:forEach>

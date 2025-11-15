@@ -11,7 +11,7 @@ import org.daw.firstweb.util.MovieMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieServiceOrmImpl implements MovieService{
+public class MovieServiceImpl implements MovieService{
     MovieDao mvDao = new MovieOrmDao();
 
     @Override
@@ -33,36 +33,25 @@ public class MovieServiceOrmImpl implements MovieService{
 
     @Override
     public boolean addMovie(MovieDto newMovie) {
-        return false;
+        if (newMovie != null){
+            Movie movie = MovieMapper.mapToDao(newMovie);
+            mvDao.addMovie(movie);
+            return true;
+        }else return false;
     }
 
 
     @Override
     public MovieDto updateMovie(MovieDto movie) {
-        return null;
+        Movie movieDao = MovieMapper.mapToDao(movie);
+        mvDao.updateMovie(movieDao);
+        return MovieMapper.mapToDto(mvDao.findById(movie.getId()));
     }
 
     @Override
     public MovieDto deleteMovieById(Long id) {
-        EntityManager em = ConnectionManager.getEntityManager();
-        MovieDto movieDelete;
-        try {
-            em.getTransaction().begin();
-            movieDelete = em.find(MovieDto.class,id);
-            if (movieDelete != null){
-                em.remove(movieDelete);
-            }
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new RuntimeException("Error al eliminar la película con ID " + id, e);
-
-        } finally {
-            em.close();
-        }
-        return movieDelete;
+        Movie movieDao = mvDao.findById(id);
+        mvDao.deleteMovieById(id);
+        return MovieMapper.mapToDto(movieDao);
     }
 }

@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>Movie Jsp</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
 </head>
 <body>
 <h1>Detalle de Película</h1>
@@ -21,14 +21,18 @@
     <p><strong>Descripción: </strong> ${movie.description}</p>
     <p><strong>Año: </strong><c:out value="${movie.year}" /></p>
 </div>
-
+<form action="${pageContext.request.contextPath}/movies" method="get" >
+    <input type="hidden" name="id" value="${movie.id}">
+    <input type="hidden" name="title" value="${movie.title}">
+    <button type="submit" class="btn">Editar</button>
+</form>
 <form action="movies" method="post" class="delete-form">
     <input type="hidden" name="_method" value="DELETE"/>
     <input type="hidden" name="id" value="${movie.id}"/>
-    <button type="submit" class="delete-btn">Eliminar esta película</button>
+    <button type="submit" class="delete-btn">Eliminar película</button>
 </form>
 
-<p><a href="movies" class="btn">Volver a la lista</a></p>
+<p><a href="movies" class="btn-back">Volver a la lista</a></p>
 
 </body>
 </html>

@@ -86,7 +86,20 @@ public class MovieJdbcDao implements MovieDao{
 
     @Override
     public Movie updateMovie(Movie movie) {
-        return null;
+        String sql = "UPDATE movies SET title = ?, description = ?, year = ? WHERE id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)){
+            pst.setString(1, movie.getTitle());
+            pst.setString(2, movie.getDescription());
+            pst.setInt(3,movie.getYear());
+            pst.setLong(4,movie.getId());
+            int updated = pst.executeUpdate();
+            if (updated == 0){
+                throw new RuntimeException("No se encontro la movie con Id "+movie.getId());
+            }
+            return movie;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar la movie",e);
+        }
     }
 
     @Override

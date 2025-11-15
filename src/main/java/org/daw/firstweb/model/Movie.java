@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Getter
 @Setter
@@ -24,6 +26,9 @@ public class Movie {
     private int year;
     @Transient
     private float rate;
+
+    @OneToMany
+    List<Comment> comments;
 
     public Movie(Long id, String title, String description, int year, float rate) {
         this.id = id;
