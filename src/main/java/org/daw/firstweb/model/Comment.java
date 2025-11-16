@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -18,9 +19,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id")
-    @NotNull
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
-    String comment_text;
-    Timestamp created_at;
+    private String comment_text;
+    @CreationTimestamp
+    private Timestamp created_at;
 }

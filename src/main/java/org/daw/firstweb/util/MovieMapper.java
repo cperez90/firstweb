@@ -11,6 +11,7 @@ public class MovieMapper {
         movieDto.setTitle(movieDao.getTitle());
         movieDto.setDescription(movieDao.getDescription());
         movieDto.setYear(movieDao.getYear());
+        movieDto.setComments(movieDao.getComments());
         return movieDto;
     }
 

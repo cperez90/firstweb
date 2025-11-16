@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,9 +28,9 @@ public class Movie {
     @Transient
     private float rate;
 
-    @Transient
-    @OneToMany
-    List<Comment> comments;
+
+    @OneToMany(mappedBy="movie", cascade=CascadeType.ALL,orphanRemoval = true)
+    List<Comment> comments = new ArrayList<>();
 
     public Movie(Long id, String title, String description, int year, float rate) {
         this.id = id;

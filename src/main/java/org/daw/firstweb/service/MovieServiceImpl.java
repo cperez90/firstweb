@@ -19,8 +19,8 @@ public class MovieServiceImpl implements MovieService{
         List<Movie> moviesDao = mvDao.findAll();
         List<MovieDto> moviesDto = new ArrayList<>();
         for (Movie mv : moviesDao){
-            MovieDto mvdto = MovieMapper.mapToDto(mv);
-            moviesDto.add(mvdto);
+            MovieDto mvDto = MovieMapper.mapToDto(mv);
+            moviesDto.add(mvDto);
         }
         return moviesDto;
     }

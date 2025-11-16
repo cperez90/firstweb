@@ -5,7 +5,7 @@ import org.daw.firstweb.model.Comment;
 import java.util.List;
 
 public interface CommentDao {
-    List<Comment> findAll();
+    List<Comment> findAllByMovieID(Long movieId);
     Comment findById(Long id);
     boolean addComment(Comment comment);
     Comment updateComment(Comment comment);

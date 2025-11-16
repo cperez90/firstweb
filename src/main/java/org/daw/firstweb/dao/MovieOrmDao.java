@@ -16,7 +16,7 @@ public class MovieOrmDao implements MovieDao{
         try {
             movies = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("No se encontraron ningunas movies ", e);
         } finally {
             em.close();
         }
@@ -28,9 +28,13 @@ public class MovieOrmDao implements MovieDao{
     public Movie findById(Long id) {
 
         try (EntityManager em = ConnectionManager.getEntityManager()) {
-            return em.find(Movie.class, id);
+            return em.createQuery(
+                            "SELECT m FROM Movie m LEFT JOIN FETCH m.comments c WHERE m.id = :id ORDER BY c.created_at ASC",
+                            Movie.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
         } catch (Exception e) {
-            throw new RuntimeException("No se encontro la movie", e);
+            throw new RuntimeException("No se encontro la movie con el ID " + id, e);
         }
     }
 

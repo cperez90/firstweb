@@ -21,10 +21,12 @@
     <p><strong>Year: </strong><c:out value="${movie.year}" /></p>
     <p><strong>Comments: </strong></p>
     <div>
-        <c:forEach var="movie" items="${comments}">
-            <p>${comments.comment_text}</p>
-            <p>${comments.created_at}</p>
+        <c:forEach var="comment" items="${movie.comments}">
+            <p><strong>Comentario:</strong> ${comment.comment_text}</p>
         </c:forEach>
+        <c:if test="${empty movie.comments}">
+            <p>No hay comentarios para esta movie.</p>
+        </c:if>
     </div>
 </div>
 <form action="${pageContext.request.contextPath}/movies" method="get" >

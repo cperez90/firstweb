@@ -10,12 +10,12 @@ import java.util.List;
 public class CommentOrmDao implements CommentDao {
 
     @Override
-    public List<Comment> findAll() {
+    public List<Comment> findAllByMovieID(Long movieId) {
         EntityManager em = ConnectionManager.getEntityManager();
         List<Comment> comments;
 
         try {
-            comments = em.createQuery("SELECT c FROM Comment c",Comment.class).getResultList();
+            comments = em.createQuery("SELECT c FROM Comment c WHERE c.movie.id = :movieId ",Comment.class).setParameter("movieId",movieId).getResultList();
         }catch (Exception e) {
             throw new RuntimeException(e);
         }finally {

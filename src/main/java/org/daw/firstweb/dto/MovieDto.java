@@ -3,6 +3,10 @@ package org.daw.firstweb.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.daw.firstweb.model.Comment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -12,6 +16,7 @@ public class MovieDto {
     private String title;
     private String description;
     private int year;
+    private List<Comment> comments = new ArrayList<>();
 
     public MovieDto(Long id, String title, String description, int year) {
         this.id = id;

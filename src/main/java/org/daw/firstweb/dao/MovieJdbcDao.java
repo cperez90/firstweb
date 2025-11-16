@@ -1,12 +1,10 @@
 package org.daw.firstweb.dao;
 
+import org.daw.firstweb.model.Comment;
 import org.daw.firstweb.model.Movie;
 import org.daw.firstweb.util.JdbcConnector;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +43,10 @@ public class MovieJdbcDao implements MovieDao{
     }
 
     @Override
-    public org.daw.firstweb.model.Movie findById(Long id) {
-        String sql = "SELECT * FROM movies WHERE id = ?";
-        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+    public Movie findById(Long id) {
+        String sqlMovie = "SELECT * FROM movies WHERE id = ?";
+        String sqlComments = "SELECT * FROM comments WHERE movie_id = ? ORDER BY created_at ASC";
+        try (PreparedStatement pst = connection.prepareStatement(sqlMovie)) {
             pst.setLong(1, id);
             try (ResultSet result = pst.executeQuery()) {
                 if (result.next()) {
@@ -55,8 +54,33 @@ public class MovieJdbcDao implements MovieDao{
                     String movieTitle = result.getString("title");
                     String movieDescription = result.getString("description");
                     int movieYear = result.getInt("year");
+                    List<Comment> comments = new ArrayList<>();
 
-                    return new Movie(movieId, movieTitle, movieDescription, movieYear,0);
+                    try (PreparedStatement pstComments = connection.prepareStatement(sqlComments)) {
+                        pstComments.setLong(1, movieId);
+                        try (ResultSet resultComments = pstComments.executeQuery()) {
+                            while (resultComments.next()) {
+                                Long commentId = resultComments.getLong("id");
+                                String commentText = resultComments.getString("comment_text");
+                                Timestamp createdAt = resultComments.getTimestamp("created_at");
+
+                                Comment comment = new Comment();
+                                comment.setId(commentId);
+                                comment.setComment_text(commentText);
+                                comment.setCreated_at(createdAt);
+
+                                Movie movieStub = new Movie();
+                                movieStub.setId(movieId);
+                                comment.setMovie(movieStub);
+
+                                comments.add(comment);
+                            }
+                        }
+                    }
+
+                    Movie movie = new Movie(movieId, movieTitle, movieDescription, movieYear,0);
+                    movie.setComments(comments);
+                    return movie;
                 } else {
                     return null;
                 }
