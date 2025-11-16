@@ -16,10 +16,16 @@
 <body>
 <h1>Detalle de Película</h1>
 <div class="movie-card">
-    <p><strong>ID: </strong><c:out value="${movie.id}" /></p>
-    <p><strong>Título: </strong><c:out value="${movie.title}" /></p>
-    <p><strong>Descripción: </strong> ${movie.description}</p>
-    <p><strong>Año: </strong><c:out value="${movie.year}" /></p>
+    <p><strong>Title: </strong><c:out value="${movie.title}" /></p>
+    <p><strong>Description: </strong> ${movie.description}</p>
+    <p><strong>Year: </strong><c:out value="${movie.year}" /></p>
+    <p><strong>Comments: </strong></p>
+    <div>
+        <c:forEach var="movie" items="${comments}">
+            <p>${comments.comment_text}</p>
+            <p>${comments.created_at}</p>
+        </c:forEach>
+    </div>
 </div>
 <form action="${pageContext.request.contextPath}/movies" method="get" >
     <input type="hidden" name="id" value="${movie.id}">
