@@ -28,11 +28,7 @@ public class MovieOrmDao implements MovieDao{
     public Movie findById(Long id) {
 
         try (EntityManager em = ConnectionManager.getEntityManager()) {
-            return em.createQuery(
-                            "SELECT m FROM Movie m LEFT JOIN FETCH m.comments c WHERE m.id = :id ORDER BY c.created_at ASC",
-                            Movie.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
+            return em.find(Movie.class,id);
         } catch (Exception e) {
             throw new RuntimeException("No se encontro la movie con el ID " + id, e);
         }
