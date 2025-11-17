@@ -10,8 +10,21 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<h1>Login</h1>
 
+<form action="login" method="post" class="add-form">
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit" class="submit-btn">login</button>
+
+</form>
 </body>
 </html>
