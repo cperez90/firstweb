@@ -29,7 +29,7 @@ public class Movie {
     private float rate;
 
 
-    @OneToMany(mappedBy="movie", cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy="movie", cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     List<Comment> comments = new ArrayList<>();
 
     public Movie(Long id, String title, String description, int year, float rate) {

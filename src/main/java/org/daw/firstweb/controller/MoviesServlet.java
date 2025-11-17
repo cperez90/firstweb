@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.daw.firstweb.dto.MovieDto;
 import org.daw.firstweb.service.MovieService;
 import org.daw.firstweb.service.MovieServiceImpl;
@@ -84,6 +85,12 @@ public class MoviesServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e + " No hace la conexion");
         }*/
+
+        HttpSession session = req.getSession(false);
+
+        if (session != null){
+            req.setAttribute("username",session.getAttribute("username"));
+        }
 
         if (req.getParameter("id") == null) {
             req.setAttribute("movies", service.findAll());

@@ -6,6 +6,7 @@
     <persistence-unit name="moviesMysql" transaction-type="RESOURCE_LOCAL">
 
         <class>org.daw.firstweb.model.Movie</class>
+        <class>org.daw.firstweb.model.Comment</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
