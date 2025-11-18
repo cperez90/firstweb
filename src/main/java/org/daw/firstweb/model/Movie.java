@@ -28,7 +28,7 @@ public class Movie {
     @Transient
     private float rate;
 
-
+    @OrderBy("created_at DESC ")
     @OneToMany(mappedBy="movie", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     List<Comment> comments = new ArrayList<>();
 
