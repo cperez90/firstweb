@@ -7,6 +7,7 @@
 
         <class>org.daw.firstweb.model.Movie</class>
         <class>org.daw.firstweb.model.Comment</class>
+        <class>org.daw.firstweb.model.User</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
