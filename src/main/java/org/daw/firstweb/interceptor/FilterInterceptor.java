@@ -21,6 +21,5 @@ public class FilterInterceptor implements Filter {
             filterChain.doFilter(request,response);
         }
         response.sendRedirect("login");
-
     }
 }
